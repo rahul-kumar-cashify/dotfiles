@@ -1,3 +1,6 @@
+# ─────────────────────────────────────────────
+# User profile (switch between personal/work)
+# ─────────────────────────────────────────────
 {{- if eq .gitProfile "personal" -}}
 [user]
     name = Rahul Kumar
@@ -14,24 +17,64 @@
     url = https://github.com/rahul-kumar-cashify
 {{- end }}
 
+# ─────────────────────────────────────────────
+# Git LFS (Large File Storage)
+# ─────────────────────────────────────────────
 [filter "lfs"]
     required = true
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
 
+# ─────────────────────────────────────────────
+# Push configuration
+# ─────────────────────────────────────────────
+# Push only the current branch by default
 [push]
     default = current
     showProgress = true
     verbose = true
-    autoSetupRemote = true
-    followTags = true
-    recurseSubmodules = check
+    autoSetupRemote = true        # automatically set upstream when pushing first time
+    followTags = true             # push annotated tags when pushing branches
+    recurseSubmodules = check     # ensure submodules are pushed only if updated
 
+# ─────────────────────────────────────────────
+# Log format and diff settings
+# ─────────────────────────────────────────────
+[log]
+    date = iso                   # Show ISO-format timestamps in logs
+
+[diff]
+    algorithm = histogram         # Better diff for text/code changes
+
+# ─────────────────────────────────────────────
+# Merge conflict handling
+# ─────────────────────────────────────────────
+[rerere]
+    enabled = true                # Record conflict resolutions for reuse
+    autoupdate = false            # Don’t auto-apply; review before committing
+
+# ─────────────────────────────────────────────
+# Commit and SSH convenience
+# ─────────────────────────────────────────────
+[commit]
+    verbose = true                # Show diff in commit editor for clarity
+
+[url "git@github.com:"]
+    insteadOf = https://github.com/  # Use SSH instead of HTTPS automatically
+
+# ─────────────────────────────────────────────
+# Git aliases
+# ─────────────────────────────────────────────
 [alias]
+    # Detailed visual log with authors and refs
     la = log --graph --all --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(auto)%d%C(reset)%n'\
 '%C(white)%s%C(reset) %C(bold yellow)- %ae%C(reset)%n'
+
+    # Compact, one-line log
     l = log --graph --oneline --decorate --abbrev-commit
+
+    # Open current branch in GitHub via default browser
     open = "!f() { \
       branch=$(git rev-parse --abbrev-ref HEAD); \
       repo_url=$(git remote get-url origin); \
@@ -40,3 +83,5 @@
       open \"$url\"; \
     }; f"
 
+# [includeIf "gitdir:~/code/work/"]
+#     path = ~/code/work/.gitconfig
