@@ -1,0 +1,35 @@
+[user]
+	name = Rahul Kumar
+	email = rahul.kumar2@cashify.in
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+
+[push]
+    default = current        # push only the current branch
+    showProgress = true      # always show "Writing objects..." etc
+    verbose = true           # detailed output
+    autoSetupRemote = true   # automatically set upstream (triggers PR link on first push)
+    followTags = true        # push tags with branch
+    recurseSubmodules = check
+
+
+[alias]
+    # Pretty detailed graph across all branches (author email in yellow)
+    la = log --graph --all --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(auto)%d%C(reset)%n'\
+'%C(white)%s%C(reset) %C(bold yellow)- %ae%C(reset)%n'
+
+    # Compact graph for quick overview
+    l = log --graph --oneline --decorate --abbrev-commit
+
+    open = "!f() { \
+      branch=$(git rev-parse --abbrev-ref HEAD); \
+      repo_url=$(git remote get-url origin); \
+      repo_url=$(echo \"$repo_url\" | sed -E 's#(git@|https://)github.com[:/]#https://github.com/#' | sed 's/.git$//'); \
+      url=\"$repo_url/tree/$branch\"; \
+      open \"$url\"; \
+    }; f"
+

@@ -1,0 +1,128 @@
+# ========= SDKMAN (MUST BE AT THE END — so we will re-source it at bottom) =========
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# ========= Load Zinit =========
+source "$(brew --prefix)/opt/zinit/zinit.zsh"
+
+# ========= Prompt =========
+zinit light-mode for @sindresorhus/pure
+
+# ========= CLI Enhancements =========
+zinit light-mode for zdharma-continuum/fast-syntax-highlighting
+zinit light-mode for zsh-users/zsh-autosuggestions
+zinit light-mode for ael-code/zsh-colored-man-pages
+
+# ========= Completion System (Fast & Lazy) =========
+zinit ice wait lucid atinit"autoload -Uz compinit; compinit -C"
+zinit light zsh-users/zsh-completions
+zinit snippet OMZP::git
+
+zinit light-mode for @sharkdp/fd
+
+zi ice lucid wait as'program' has'git' \
+  atclone"cp git-open.1.md $ZI[MAN_DIR]/man1/git-open.1" atpull'%atclone'
+zi light paulirish/git-open
+
+zi snippet OMZL::clipboard.zsh
+zi snippet https://github.com/matthieusb/zsh-sdkman/blob/master/zsh-sdkman.plugin.zsh
+
+# ========= FZF Enhancements =========
+zinit ice lucid wait
+zinit snippet OMZP::fzf
+zinit light-mode for Aloxaf/fzf-tab
+
+# ========= FZF Config =========
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}' --preview-window up:3:hidden:wrap
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)'
+  --header 'Press CTRL-Y to copy command into clipboard'"
+
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --layout=reverse --height=40% --bind ctrl-u:page-up,ctrl-d:page-down"
+
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+# ========= fzf-tab Styles =========
+zstyle ':completion:*' fzf-tab '--preview=bat {}'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'find ${(Q)realpath} -mindepth 1 -maxdepth 2 -print 2>/dev/null | ls -la --color=always'
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+
+# ========= Navigation Tools =========
+zinit light-mode for changyuheng/zsh-interactive-cd
+
+# ========= Tmux Auto-Attach =========
+# if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+#   tmux attach-session -t default || tmux new-session -s default
+# fi
+
+_tmux() {
+    if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+        tmux a -t default || exec tmux new -s default;
+    fi
+}
+
+# ========= Editor Setup =========
+if command -v nvim &> /dev/null; then
+  export EDITOR=nvim
+  export VISUAL=nvim
+  alias v='nvim'
+fi
+
+# ========= Pager Colors =========
+export LESS="-FXR"
+export LESS_TERMCAP_mb=$'\e[35m' # magenta
+export LESS_TERMCAP_md=$'\e[33m' # yellow
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[34m' # blue
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[4m'  # underline
+
+# ---------------------------- Aliases ----------------------------
+
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'  # notify on long cmd
+
+alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' ' -f1 | sed -e's/:$//g' | grep -v '[0-9]$' | xargs tail -f"  # tail all log files
+
+# -------------------- GIT -------------------
+
+alias ga='git add --verbose'
+alias gap='git add --patch --verbose'
+alias gau='git add --update'
+
+alias gd='git diff'
+alias gds='git diff --staged'
+
+alias gs='git status'
+alias gss='git status --short'
+
+alias gc='git commit'
+
+alias gf='git fetch --all'
+
+alias gp='git push'
+alias gpo='git push origin'
+
+alias gl="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Creset %C(auto)%s%Creset %C(bold green)(%cr)%Creset %C(italic 244)<%an>%Creset' --abbrev-commit "
+alias gla="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Creset %C(auto)%s%Creset %C(bold green)(%cr)%Creset %C(italic 244)<%an>%Creset' --abbrev-commit --all"
+
+# ========= Terminal Settings =========
+export TERM=xterm-256color
+export ZSH_TMUX_TERM="screen-256color"
+
+bindkey -e  # Emacs mode
+
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+
+# ========= Ensure SDKMAN is last =========
+# [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+
+# Created by `pipx` on 2025-07-24 07:14:55
+export PATH="$PATH:/Users/rahulkumar/.dotfiles/.local/bin"
