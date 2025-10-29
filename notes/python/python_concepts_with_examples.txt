@@ -1,0 +1,185 @@
+
+Core Python Concepts for Java/JavaScript Developers
+---------------------------------------------------
+
+Language Foundations
+--------------------
+- Dynamic typing & duck typing:
+  Python does not require type declarations. Objects are identified by behavior.
+  Example:
+      def add(a, b):
+          return a + b
+      print(add(1, 2))       # 3
+      print(add("a", "b"))   # "ab"
+
+- Indentation-based syntax:
+  Blocks are defined by indentation.
+  Example:
+      if True:
+          print("Indented block")
+
+- Mutable vs immutable types:
+  Lists and dicts are mutable, strings and tuples are immutable.
+  Example:
+      a = [1, 2, 3]
+      a[0] = 99      # Works
+      s = "hello"
+      # s[0] = 'H'   # Error: strings are immutable
+
+- Everything is an object:
+  Functions, classes, even types are objects.
+  Example:
+      print(type(5))        # <class 'int'>
+      print(callable(len))  # True
+
+Data Structures
+---------------
+- Lists, Tuples, Sets, Dictionaries:
+  Example:
+      my_list = [1, 2, 3]
+      my_tuple = (1, 2)
+      my_set = {1, 2, 3}
+      my_dict = {"a": 1, "b": 2}
+
+- List/set/dict comprehensions:
+  Example:
+      squares = [x**2 for x in range(5)]
+      my_dict = {x: x**2 for x in range(3)}
+
+- Unpacking:
+  Example:
+      a, b = (1, 2)
+      a, *rest = [1, 2, 3, 4]  # a = 1, rest = [2, 3, 4]
+
+Functions & Functional Python
+-----------------------------
+- First-class functions, closures:
+  Example:
+      def outer(x):
+          def inner(y):
+              return x + y
+          return inner
+      f = outer(10)
+      print(f(5))  # 15
+
+- lambda, map, filter, reduce:
+  Example:
+      squares = list(map(lambda x: x**2, [1, 2, 3]))
+      evens = list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4]))
+
+- Decorators:
+  Example:
+      def decorator(fn):
+          def wrapper():
+              print("Before call")
+              fn()
+              print("After call")
+          return wrapper
+
+      @decorator
+      def say_hello():
+          print("Hello")
+      say_hello()
+
+- Generators & yield:
+  Example:
+      def gen():
+          yield 1
+          yield 2
+      for i in gen():
+          print(i)
+
+- Context managers:
+  Example:
+      with open("file.txt", "w") as f:
+          f.write("hello")
+
+Object-Oriented Python
+-----------------------
+- Classes and self:
+  Example:
+      class Dog:
+          def __init__(self, name):
+              self.name = name
+          def bark(self):
+              return f"{self.name} barks"
+
+- Inheritance, super():
+  Example:
+      class Animal:
+          def speak(self):
+              return "Sound"
+
+      class Dog(Animal):
+          def speak(self):
+              return super().speak() + " + Bark"
+
+- Dunder methods:
+  Example:
+      class Point:
+          def __init__(self, x, y):
+              self.x = x
+              self.y = y
+          def __str__(self):
+              return f"Point({self.x}, {self.y})"
+
+- @dataclass:
+  Example:
+      from dataclasses import dataclass
+
+      @dataclass
+      class Point:
+          x: int
+          y: int
+
+Typing and Modern Python
+-------------------------
+- Type hints:
+  Example:
+      def add(a: int, b: int) -> int:
+          return a + b
+
+- Union, Optional, TypedDict, Literal:
+  Example:
+      from typing import Union, Optional, TypedDict, Literal
+
+      def handle(x: Union[int, str]):
+          print(x)
+
+      def maybe_name(name: Optional[str]):
+          print(name if name else "Unknown")
+
+      class Person(TypedDict):
+          name: str
+          age: int
+
+      def greet(mode: Literal["casual", "formal"]):
+          print("Hello!" if mode == "casual" else "Good day.")
+
+- Pattern matching:
+  Example:
+      def handle(val):
+          match val:
+              case 1:
+                  return "One"
+              case _:
+                  return "Other"
+
+Modules and Packages
+---------------------
+- import, from, as:
+  Example:
+      import math
+      from math import sqrt as square_root
+
+- __main__ idiom:
+  Example:
+      if __name__ == "__main__":
+          print("Running as script")
+
+- __init__.py and package structure:
+  Create __init__.py to define a package.
+
+- Virtual environments:
+  Create with: python -m venv env
+  Activate and install: source env/bin/activate && pip install requests

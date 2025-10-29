@@ -1,0 +1,38 @@
+
+Core Python Concepts for Java/JavaScript Developers
+---------------------------------------------------
+
+Language Foundations
+- Dynamic typing & duck typing
+- Indentation-based syntax
+- Mutable vs immutable types
+- Everything is an object
+
+Data Structures
+- Lists, Tuples, Sets, Dictionaries
+- List/set/dict comprehensions
+- Unpacking (*, **, a, b = ...)
+
+Functions & Functional Python
+- First-class functions, closures
+- lambda, map, filter, reduce
+- Decorators (@decorator)
+- Generators & yield
+- Context managers (with + __enter__, __exit__)
+
+Object-Oriented Python
+- Classes and self
+- Inheritance, super()
+- Dunder methods (__init__, __str__, etc.)
+- @dataclass
+
+Typing and Modern Python
+- Type hints
+- Union, Optional, TypedDict, Literal
+- Pattern matching (match/case from Python 3.10+)
+
+Modules and Packages
+- import, from, as
+- __main__ idiom
+- __init__.py and package structure
+- Virtual environments (venv, pip)

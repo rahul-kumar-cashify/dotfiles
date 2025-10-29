@@ -1,0 +1,72 @@
+
+Common Python Decorators:
+1. @staticmethod:
+   - Defines a method that doesn't operate on an instance but the class itself.
+   - Does not have access to instance-specific data (self).
+
+2. @classmethod:
+   - Defines a method that takes the class (cls) as its first argument instead of an instance.
+   - Useful for factory methods or working with the class itself.
+
+3. @property:
+   - Turns a method into a property, allowing it to be accessed like an attribute.
+   - Supports getter, setter, and deleter functionality.
+
+4. @functools.wraps:
+   - A helper decorator that ensures the metadata of a wrapped function is preserved, such as its name and docstring.
+
+5. @lru_cache:
+   - Caches the results of a function based on its arguments to improve performance on repeated calls.
+
+6. @abstractmethod:
+   - Used in abstract base classes (ABC) to enforce that the method must be overridden in subclasses.
+
+7. @timer (Custom Decorator Example):
+   - Measures the execution time of a function.
+
+8. @cache_property:
+   - Memoizes a method to cache its result so subsequent calls return the cached value.
+
+---
+
+Explanation of *args, **kwargs, * and **:
+
+1. *args:
+   - Allows a function to accept any number of positional arguments.
+   - Inside the function, `args` is a tuple containing all arguments passed to the function.
+
+   Example:
+   def foo(*args):
+       print(args)
+
+   foo(1, 2, 3)  # Output: (1, 2, 3)
+
+2. **kwargs:
+   - Allows a function to accept any number of keyword arguments (named arguments).
+   - Inside the function, `kwargs` is a dictionary containing all the keyword arguments passed.
+
+   Example:
+   def bar(**kwargs):
+       print(kwargs)
+
+   bar(a=1, b=2)  # Output: {'a': 1, 'b': 2}
+
+3. * (single asterisk):
+   - Used for unpacking a list or tuple into individual arguments.
+
+   Example:
+   def greet(name, age):
+       print(f"Name: {name}, Age: {age}")
+
+   data = ("Alice", 25)
+   greet(*data)  # Output: Name: Alice, Age: 25
+
+4. ** (double asterisk):
+   - Used for unpacking a dictionary into keyword arguments.
+
+   Example:
+   def info(name, age):
+       print(f"Name: {name}, Age: {age}")
+
+   details = {"name": "Bob", "age": 30}
+   info(**details)  # Output: Name: Bob, Age: 30
