@@ -6,9 +6,8 @@ return {
 				"stylua",
 				"prettier",
 				"prettierd",
-				"black",
-				"isort",
-				"autopep8",
+				"ruff",
+				"debugpy",
 			},
 		},
 	},
@@ -21,7 +20,7 @@ return {
 			require("conform").setup({
 				formatters_by_ft = {
 					lua = { "stylua" },
-					python = { "autopep8", "black", "isort", stop_after_first = true },
+					python = { "ruff_format", "ruff_organize_imports", stop_after_first = true },
 					javascript = { "prettierd", "prettier", stop_after_first = true },
 					typescript = { "prettierd", "prettier", stop_after_first = true },
 					html = { "prettierd", "prettier", stop_after_first = true },
