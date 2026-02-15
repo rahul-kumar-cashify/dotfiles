@@ -38,6 +38,54 @@ vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_next)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_prev)
 
+-- Close quickfix/location list when selecting an item
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		local buf = vim.api.nvim_get_current_buf()
+		local function close_qf()
+			-- Check if it's a location list or quickfix list
+			local wininfo = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1]
+			if wininfo and wininfo.loclist == 1 then
+				vim.cmd("lclose")
+			else
+				vim.cmd("cclose")
+			end
+		end
+
+		-- Close when pressing Enter
+		vim.keymap.set("n", "<CR>", function()
+			vim.cmd("normal! <CR>")
+			vim.defer_fn(close_qf, 100)
+		end, { buffer = buf })
+
+		-- Close on double-click
+		vim.keymap.set("n", "<2-LeftMouse>", function()
+			vim.cmd("normal! <CR>")
+			vim.defer_fn(close_qf, 100)
+		end, { buffer = buf })
+	end,
+})
+
+-- Close quickfix when leaving it to jump to a file
+vim.api.nvim_create_autocmd("WinLeave", {
+	callback = function()
+		local win = vim.api.nvim_get_current_win()
+		local buf = vim.api.nvim_win_get_buf(win)
+		if vim.bo[buf].filetype == "qf" then
+			vim.defer_fn(function()
+				-- Only close if we're now in a different window
+				local current_win = vim.api.nvim_get_current_win()
+				if current_win ~= win then
+					vim.cmd("cclose")
+					vim.cmd("lclose")
+				end
+			end, 50)
+		end
+	end,
+})
+
+vim.opt.termguicolors = true
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then

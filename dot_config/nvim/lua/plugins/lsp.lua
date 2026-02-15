@@ -26,7 +26,6 @@ return {
 				ensure_installed = {
 					"lua_ls", --  Lua
 					"bashls", --  Bash
-					"basedpyright", --  Python
 					"ts_ls", --  JS/TS
 					"yamlls", --  YAML
 					"dockerls", --  Docker
@@ -37,7 +36,9 @@ return {
 					"vimls", --  Vimscript
 					"tailwindcss", --  TailwindCSS
 					"gradle_ls", --  Gradle
+					"jdtls", --  Java
 					"ast_grep",
+					"pyright",
 				},
 				handlers = {
 					function(server_name)
