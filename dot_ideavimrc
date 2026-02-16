@@ -1,87 +1,74 @@
 " Source vimrc (check path, '~/.vimrc' likely)
 source ~/.vimrc
+
+" =========================
+" IdeaVim extensions (built-in)
+" =========================
+set surround
+set easymotion
+set highlightedyank
+set anyobject
+set NERDTree
+
+
+
+" Completion navigation
 nnoremap <C-n> :action ChooseLookupItemDown<CR>
 nnoremap <C-p> :action ChooseLookupItemUp<CR>
-
-" Enable surround plugin
-set surround
-
-set NERDTree
 
 " Matchpairs adjustment
 set matchpairs-={:}
 
-
-
 " === Navigation and Editing ===
-
-" KJump word navigation
 
 " Caret movements in Insert mode
 imap <C-e> <Esc>:action EditorLineEnd<CR>
 imap <C-a> <Esc>:action EditorMoveLineStart<CR>
 
-
 " Copilot actions
-imap <C-]> <Esc>:action copilot.applyInlaysNextWord<CR>
-nmap <leader>cc :action github.copilot.inline.action<CR>
-vmap <leader>cc :action github.copilot.inline.action<CR>
+" imap <C-]> <Esc>:action copilot.applyInlaysNextWord<CR>
+" nmap <leader>cc :action github.copilot.inline.action<CR>
 
-" Selectsymotion-sn) current file in Project View
-nnoremap <C-f> :action SelectInProjectView<CR>
+" Select current file in Project View (instead of NERDTree)
+nnoremap <C-e> :action SelectInProjectView<CR>
 
 " === Project / File / Symbol Navigation ===
 
 " Spotless code formatting
 nmap <leader>fm :execute "action com.github.ragurney.spotless.actions.ReformatFileAction"<CR>
-"acejump
-nmap ss <Action>(AceWordAction)
-nmap cs <Action>(ChangeSignature)
+
+" AceJump
+nmap ss <Plug>(easymotion-bd-w)
+
+
+" Refactor actions
+nnoremap <leader><leader>r :action RefactoringMenu<CR>
+
 nmap <leader>rn <Action>(RenameElement)
-
-
-
-
-
-
-
 
 " Bookmarks
 nmap <leader>hh :action ShowBookmarks<CR>
 
-" Rename symbol
-nmap <leader>rn :action RenameElement<CR>
-
-" Goto file, class, and search in path
-map <leader>ff :action GotoFile<CR>
-map <leader>fc :action GotoClass<CR>
-map <leader>lg :action FindInPath<CR>
-
-" Generate code
-nmap <leader>ca :action Generate<CR>
-
 " Reference search
 map gr :action FindUsages<CR>
 map gd :action GotoDeclaration<CR>
-map gD :action QuickImplementations<CR>  " Quick definition (legacy)
+map gD :action QuickImplementations<CR>
 nnoremap gi :action GotoImplementation<CR>
 
-" Comments
+" Comments (you can also use gc with 'commentary' motions, but keeping these)
 map gc :action CommentByLineComment<CR>
 map gb :action CommentByBlockComment<CR>
 
 " === Problems & Fixes ===
 
-" View problems/errors
-map <leader>dd :action ShowErrorsInProject<CR>
-map <leader>dl :action ShowErrorsInProject<CR>
-
 " Quick fix actions
 map <leader>F :action ShowIntentionActions<CR>
 
 " Navigate errors
+nnoremap <leader>e :action ShowErrorDescription<CR>
 map ]d :action GotoNextError<CR>
 map [d :action GotoPreviousError<CR>
+
 
 " === Clipboard ===
 
@@ -90,3 +77,19 @@ nmap <leader>y :action EditorCopy<CR>
 
 " === Folding ===
 set foldenable
+
+" open/close
+nmap zo :action ExpandRegion<CR>
+nmap zO :action ExpandAllRegions<CR>
+nmap zc :action CollapseRegion<CR>
+nmap zC :action CollapseAllRegions<CR>
+
+" toggle
+nmap za :action ToggleFold<CR>
+nmap zA :action CollapseAllRegions<CR>
+
+" extras (nice to have)
+nmap zR :action ExpandAllRegions<CR>      " like vim: open all folds
+nmap zM :action CollapseAllRegions<CR>    " like vim: close all folds
+nmap zv :action ExpandRegion<CR>          " reveal/open just enough
+

@@ -5,7 +5,7 @@ case $- in
 esac
 # If not already inside tmux, bind Ctrl+Space to auto-attach
 if [ -z "$TMUX" ]; then
-  bind -x '"\C- ": tmux attach 2>/dev/null || tmux new -s main'
+  bind -x '"\C-b": tmux attach 2>/dev/null || tmux new -s main'
 fi
 
 # ========= Tmux Auto-Attach =========
@@ -186,3 +186,8 @@ export EDITOR=nvim
 # alias bashconfig="mate ~/.bashrc"
 # alias ohmybash="mate ~/.oh-my-bash"
 export BASH_SILENCE_DEPRECATION_WARNING=1
+bind -x '"\C-g":cursor-agent '
+idea() {
+  open -na "IntelliJ IDEA.app" --args "$@"
+}
+

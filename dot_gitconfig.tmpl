@@ -1,6 +1,3 @@
-# ─────────────────────────────────────────────
-# User profile (switch between personal/work)
-# ─────────────────────────────────────────────
 {{- if eq .gitProfile "personal" -}}
 [user]
     name = Rahul Kumar
@@ -29,52 +26,48 @@
 # ─────────────────────────────────────────────
 # Push configuration
 # ─────────────────────────────────────────────
-# Push only the current branch by default
 [push]
     default = current
     showProgress = true
     verbose = true
-    autoSetupRemote = true        # automatically set upstream when pushing first time
-    followTags = true             # push annotated tags when pushing branches
-    recurseSubmodules = check     # ensure submodules are pushed only if updated
+    autoSetupRemote = true
+    followTags = true
+    recurseSubmodules = check
 
 # ─────────────────────────────────────────────
 # Log format and diff settings
 # ─────────────────────────────────────────────
 [log]
-    date = iso                   # Show ISO-format timestamps in logs
+    date = iso
 
 [diff]
-    algorithm = histogram         # Better diff for text/code changes
+    algorithm = histogram
 
 # ─────────────────────────────────────────────
 # Merge conflict handling
 # ─────────────────────────────────────────────
 [rerere]
-    enabled = true                # Record conflict resolutions for reuse
-    autoupdate = false            # Don’t auto-apply; review before committing
+    enabled = true
+    autoupdate = false
 
 # ─────────────────────────────────────────────
 # Commit and SSH convenience
 # ─────────────────────────────────────────────
 [commit]
-    verbose = true                # Show diff in commit editor for clarity
+    verbose = true
 
 [url "git@github.com:"]
-    insteadOf = https://github.com/  # Use SSH instead of HTTPS automatically
+    insteadOf = https://github.com/
 
 # ─────────────────────────────────────────────
 # Git aliases
 # ─────────────────────────────────────────────
 [alias]
-    # Detailed visual log with authors and refs
     la = log --graph --all --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(auto)%d%C(reset)%n'\
 '%C(white)%s%C(reset) %C(bold yellow)- %ae%C(reset)%n'
 
-    # Compact, one-line log
     l = log --graph --oneline --decorate --abbrev-commit
 
-    # Open current branch in GitHub via default browser
     open = "!f() { \
       branch=$(git rev-parse --abbrev-ref HEAD); \
       repo_url=$(git remote get-url origin); \
@@ -83,5 +76,39 @@
       open \"$url\"; \
     }; f"
 
+    rebase-undo = "!f() { \
+        YELLOW='\\033[1;33m'; RED='\\033[1;31m'; RESET='\\033[0m'; \
+        echo \"Reflog of HEAD:\"; \
+        git --no-pager reflog -n 5 HEAD; \
+        echo; \
+        echo -e \"${YELLOW}Reset target:${RESET} ${RED}HEAD@{1}${RESET}\"; \
+        read -p \"Really reset to HEAD@{1}? This will discard uncommitted changes. [y/N] \" ans; \
+        if [ \"$ans\" = \"y\" ] || [ \"$ans\" = \"Y\" ]; then \
+            git reset --hard HEAD@{1}; \
+        else \
+            echo \"Aborted.\"; \
+        fi; \
+    }; f"
+
+
+    pr-raise = "!f() { \
+        branch=$(git rev-parse --abbrev-ref HEAD); \
+        origin_url=$(git remote get-url origin); \
+        origin_url=$(echo \"$origin_url\" | sed -E 's#(git@|https://)github.com[:/]#https://github.com/#' | sed 's/\\.git$//'); \
+        upstream_url=$(git remote get-url upstream 2>/dev/null); \
+        if [ -z \"$upstream_url\" ]; then echo \"No upstream remote found\"; exit 1; fi; \
+        upstream_url=$(echo \"$upstream_url\" | sed -E 's#(git@|https://)github.com[:/]#https://github.com/#' | sed 's/\\.git$//'); \
+        base=$(git remote show upstream 2>/dev/null | sed -n 's/.*HEAD branch: //p'); \
+        [ -z \"$base\" ] && base=main; \
+        open \"$upstream_url/compare/$base...$(basename \"$origin_url\"):$branch?expand=1\"; \
+    }; f"
+
+
+
+# ─────────────────────────────────────────────
+# Include work-specific Git settings (optional)
+# ─────────────────────────────────────────────
 # [includeIf "gitdir:~/code/work/"]
 #     path = ~/code/work/.gitconfig
+
+

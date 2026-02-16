@@ -19,7 +19,7 @@ wezterm.on("toggle-opacity", function(window, pane)
 end)
 
 -- FONT SETTINGS
-config.font_size = 16
+config.font_size = 18
 config.font = wezterm.font_with_fallback({
 	{ family = "JetBrains Mono", weight = "Medium" },
 	{ family = "Terminus", weight = "Bold" },

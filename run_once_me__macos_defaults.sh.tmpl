@@ -1,0 +1,50 @@
+#!/bin/bash
+# macOS Speed & Developer Tweaks
+
+# Trackpad & Keyboard
+defaults write -g com.apple.trackpad.scaling -float 6                  # Increase trackpad tracking speed
+defaults write -g KeyRepeat -int 1                                    # Fastest key repeat rate
+defaults write -g InitialKeyRepeat -int 10                            # Short delay before key repeat
+defaults write -g ApplePressAndHoldEnabled -bool false                # Disable press-and-hold for keys (enable repeat)
+defaults write -g AppleKeyboardUIMode -int 3                          # Full keyboard control (tab to all UI elements)
+defaults write com.apple.AppleMultitouchTrackpad Clicking -int 1     # Enable tap to click on trackpad
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1     # Enable tap to click globally
+defaults write -g NSAutomaticCapitalizationEnabled -bool false       # Disable automatic capitalization (coding friendly)
+
+# Dock & Mission Control
+defaults write com.apple.dock expose-animation-duration -float 0      # Disable Mission Control animation
+defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES # Disable Spaces switching animation
+defaults write com.apple.dock autohide-delay -float 0                 # Remove dock autohide delay
+defaults write com.apple.dock autohide-time-modifier -float 0         # Remove dock autohide animation
+defaults write com.apple.dock no-bouncing -bool true                  # Disable dock icon bounce
+defaults write com.apple.dock mineffect -string scale                  # Use fastest minimize effect (scale)
+defaults write -g NSAutomaticWindowAnimationsEnabled -bool false      # Disable window animations
+defaults write com.apple.dock mru-spaces -bool false                   # Keep desktop spaces order fixed
+defaults write com.apple.dock wvous-tl-corner -int 0                   # Disable hot corner for Mission Control
+
+# Window & UI speed
+defaults write -g NSWindowResizeTime -float 0.001                     # Speed up window resize animation
+defaults write -g QLPanelAnimationDuration -float 0                   # Speed up Quick Look animation
+
+# Finder tweaks
+defaults write com.apple.finder AppleShowAllFiles -bool true           # Show hidden files
+defaults write -g AppleShowAllExtensions -bool true                    # Show all file extensions
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true     # Show full POSIX path in Finder title
+defaults write com.apple.finder DisableAllAnimations -bool true        # Disable Finder animations
+defaults write com.apple.finder NewWindowTarget -string "PfHm"         # Set default Finder window location to Home
+
+# Save/Open dialogs
+defaults write -g NSNavPanelExpandedStateForSaveMode -bool true        # Expand Save dialog by default
+defaults write -g NSNavPanelExpandedStateForSaveMode2 -bool true       # Expand Open dialog by default
+
+# Menu bar clock
+defaults write com.apple.menuextra.clock DateFormat -string "HH:mm:ss" # Show clock with hours, minutes, seconds
+
+# Disable Gatekeeper (allow apps from anywhere) — USE WITH CAUTION
+sudo spctl --master-disable
+
+# Restart affected apps to apply changes
+killall SystemUIServer
+killall Dock     2>/dev/null || true
+killall Finder   2>/dev/null || true
+
